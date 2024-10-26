@@ -2,14 +2,14 @@ from django.shortcuts import render
 
 from django.http import HttpResponse
 
-conversion_rates = {
-    'USD': {'EUR': 0.85, 'JPY': 110.0, 'GBP': 0.75},
-    'EUR': {'USD': 1.18, 'JPY': 130.0, 'GBP': 0.88},
-    'JPY': {'USD': 0.009, 'EUR': 0.0077, 'GBP': 0.0068},
-    'GBP': {'USD': 1.33, 'EUR': 1.14, 'JPY': 148.0}
-}
+from .currency_fetcher import fetch_conversion_rates
+
+api_key = '91169fb003b5cd05f738b1dac2930472'
 
 def convert_currency(currency_from, currency_to, amount):
+
+    conversion_rates = fetch_conversion_rates(api_key, currency_from)
+
     if currency_from in conversion_rates and currency_to in conversion_rates[currency_from]:
         conversion_rate = conversion_rates[currency_from][currency_to]
         return amount * conversion_rate
